@@ -41,7 +41,13 @@ function buildChangelogBetweenTags () {
     # Parameters
     tagFrom=$1
     tagTo=$2
-    >&2 echo "From $tagFrom to $tagTo"
+    if [ "$tagTo" == "" ]; then
+        tagRange=""
+        >&2 echo "Using commit messages of $tagFrom tag"
+    else
+        tagRange=".."
+        >&2 echo "Using commit messages of $tagFrom..$tagTo range"
+    fi
 
     # Initioalizacion
     OLDIFS="$IFS"
@@ -51,7 +57,7 @@ function buildChangelogBetweenTags () {
     remoteURL=$(echo $remoteURL|awk -F'@'  {'print "https://" $2'})
     tagDate=$(git log $tagTo -n 1  --simplify-by-decoration --pretty="format:%ai"|awk {'print $1'})
     commitWord="commit"
-    commitList=$(git log ${tagFrom}..${tagTo} --no-merges --pretty=format:"%h %s%n")
+    commitList=$(git log ${tagFrom}${tagRange}${tagTo} --no-merges --pretty=format:"%h %s%n")
     changelog=()
     commitCount=0
     for commit in ${commitList}
@@ -75,10 +81,15 @@ function buildChangelogBetweenTags () {
     fi
     IFS="$OLDIFS"
 }
-previoustag=""
-tags=$(git tag|tail -r)
-for tag in $tags
+currentTag=""
+nextTag=""
+tagList=$(git tag|tail -r)
+for currentTag in $tagList
 do
-  [[ $nexttag == "" ]] || buildChangelogBetweenTags $tag $nexttag
-  nexttag=$tag
+  [[ $nextTag == "" ]] || buildChangelogBetweenTags $currentTag $nextTag
+  nextTag=$currentTag
 done
+
+if [ "$currentTag" != "" ]; then
+    buildChangelogBetweenTags $currentTag
+fi
