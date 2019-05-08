@@ -38,10 +38,19 @@ function getTypeByNumber() {
 }
 
 function buildChangelogBetweenTags () {
+    local tagFrom tagTo tagRange tagName tagDate remoteURL commitWord commitList commitCount changelog commit hash type message number
+
     # Parameters
     tagFrom=$1
     tagTo=$2
-    >&2 echo "From $tagFrom to $tagTo"
+    if [ "$tagTo" == "" ]; then
+        tagRange=""
+        tagName=$tagFrom
+    else
+        tagRange=".."
+        tagName=$tagTo
+    fi
+    >&2 echo "Using commit messages of $tagName"
 
     # Initioalizacion
     OLDIFS="$IFS"
@@ -51,9 +60,9 @@ function buildChangelogBetweenTags () {
     remoteURL=$(echo $remoteURL|awk -F'@'  {'print "https://" $2'})
     tagDate=$(git log $tagTo -n 1  --simplify-by-decoration --pretty="format:%ai"|awk {'print $1'})
     commitWord="commit"
-    commitList=$(git log ${tagFrom}..${tagTo} --no-merges --pretty=format:"%h %s%n")
-    changelog=()
+    commitList=$(git log ${tagFrom}${tagRange}${tagTo} --no-merges --pretty=format:"%h %s%n")
     commitCount=0
+    changelog=()
     for commit in ${commitList}
     do
         hash=$(echo $commit|awk '{print $1}')
@@ -66,19 +75,32 @@ function buildChangelogBetweenTags () {
         fi
     done
     if [ $commitCount -gt 0 ]; then
-        echo -e "# $tagTo ($tagDate)\n"
+        if [ $changelogTitleWasPrinted -eq 0 ]; then
+            echo -e "# Changelog\n"
+            changelogTitleWasPrinted=1
+        fi
+        echo -e "## $tagName ($tagDate)\n"
         for number in $(seq 0 6)
         do
             type=$(getTypeByNumber $number)
-            [ "${changelog[$number]}" ] && echo -e "## $type\n\n${changelog[$number]}" | sort
+            chagngelog[$number]=$(echo -e "${changelog[$number]}" | sort)
+            if [ "${changelog[$number]}" ]; then
+                echo -e "### $type\n\n${changelog[$number]}"
+            fi
         done
     fi
     IFS="$OLDIFS"
 }
-previoustag=""
-tags=$(git tag|tail -r)
-for tag in $tags
+changelogTitleWasPrinted=0
+currentTag=""
+nextTag=""
+tagList=$(git tag|tail -r)
+for currentTag in $tagList
 do
-  [[ $nexttag == "" ]] || buildChangelogBetweenTags $tag $nexttag
-  nexttag=$tag
+  [[ $nextTag == "" ]] || buildChangelogBetweenTags $currentTag $nextTag
+  nextTag=$currentTag
 done
+
+if [ "$currentTag" != "" ]; then
+    buildChangelogBetweenTags $currentTag
+fi
