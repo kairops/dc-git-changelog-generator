@@ -1,44 +1,47 @@
 #!/bin/bash
 
-# Fix - for a bug fix.
-# Update - for a backwards-compatible enhancement.
-# Breaking - for a backwards-incompatible enhancement.
-# Docs - changes to documentation only.
-# Build - changes to build process only.
-# New - implemented a new feature.
-# Upgrade - for a dependency upgrade.
+# Changelog "items" sorted in relevance order
+#
+#   Breaking - for a backwards-incompatible enhancement.
+#   New - implemented a new feature.
+#   Upgrade - for a dependency upgrade.
+#   Update - for a backwards-compatible enhancement.
+#   Fix - for a bug fix.
+#   Build - changes to build process only.
+#   Docs - changes to documentation only.
 
 function getNumberByType() {
     case $1 in
-        'Fix:') number=0;;
-        'Update:') number=1;;
-        'Breaking:') number=2;;
-        'Docs:') number=3;;
-        'Build:') number=4;;
-        'New:') number=5;;
-        'Upgrade:') number=6;;
+        'Breaking:') number=0;;
+        'New:') number=1;;
+        'Upgrade:') number=2;;
+        'Update:') number=3;;
+        'Fix:') number=4;;
+        'Build:') number=5;;
+        'Docs:') number=6;;
+        *) number=-1;;
     esac
     echo -n $number
 }
 
 function getTypeByNumber() {
     case $1 in
-        0) type='Fix';;
-        1) type='Update';;
-        2) type='Breaking';;
-        3) type='Docs';;
-        4) type='Build';;
-        5) type='New';;
-        6) type='Upgrade';;
+        0) type='Breaking';;
+        1) type='New';;
+        2) type='Upgrade';;
+        3) type='Update';;
+        4) type='Fix';;
+        5) type='Build';;
+        6) type='Docs';;
     esac
     echo -n $type
 }
 
 function buildChangelogBetweenTags () {
-
     # Parameters
     tagFrom=$1
     tagTo=$2
+    >&2 echo "From $tagFrom to $tagTo"
 
     # Initioalizacion
     OLDIFS="$IFS"
@@ -46,25 +49,36 @@ function buildChangelogBetweenTags () {
     remoteURL=$(git ls-remote --get-url)
     remoteURL=${remoteURL%".git"}
     remoteURL=$(echo $remoteURL|awk -F'@'  {'print "https://" $2'})
-    tagDate=$(git log v2.6.2 -n 1  --simplify-by-decoration --pretty="format:%ai"|awk {'print $1'})
+    tagDate=$(git log $tagTo -n 1  --simplify-by-decoration --pretty="format:%ai"|awk {'print $1'})
     commitWord="commit"
-    commits=$(git log ${tagFrom}..${tagTo} --no-merges --pretty=format:"%h %s%n")
+    commitList=$(git log ${tagFrom}..${tagTo} --no-merges --pretty=format:"%h %s%n")
     changelog=()
-    for commit in ${commits}
+    commitCount=0
+    for commit in ${commitList}
     do
         hash=$(echo $commit|awk '{print $1}')
         type=$(echo $commit|awk '{print $2}')
         message=$(echo $commit|awk '{ print substr($0, index($0,$3)) }')
         number=$(getNumberByType $type)
-        changelog[$number]=$(echo "${changelog[$number]}* $message ([${hash}](${remoteURL}/${commitWord}/${hash}))\n")
+        if [ $number -ge 0  ]; then
+            changelog[$number]=$(echo "${changelog[$number]}* $message ([${hash}](${remoteURL}/${commitWord}/${hash}))\n")
+            commitCount=$((commitCount+1))
+        fi
     done
-    echo -e "# $tagFrom ($tagDate)\n"
-    for number in $(seq 1 6)
-    do
-        type=$(getTypeByNumber $number)
-        [ "${changelog[$number]}" ] && echo -e "## $type\n\n${changelog[$number]}"
-    done
+    if [ $commitCount -gt 0 ]; then
+        echo -e "# $tagTo ($tagDate)\n"
+        for number in $(seq 0 6)
+        do
+            type=$(getTypeByNumber $number)
+            [ "${changelog[$number]}" ] && echo -e "## $type\n\n${changelog[$number]}" | sort
+        done
+    fi
     IFS="$OLDIFS"
 }
-
-buildChangelogBetweenTags v2.6.1 v2.6.2
+previoustag=""
+tags=$(git tag|tail -r)
+for tag in $tags
+do
+  [[ $nexttag == "" ]] || buildChangelogBetweenTags $tag $nexttag
+  nexttag=$tag
+done
