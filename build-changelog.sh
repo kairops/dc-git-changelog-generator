@@ -38,16 +38,19 @@ function getTypeByNumber() {
 }
 
 function buildChangelogBetweenTags () {
+    local tagFrom tagTo tagRange tagName tagDate remoteURL commitWord commitList commitCount changelog commit hash type message number
+
     # Parameters
     tagFrom=$1
     tagTo=$2
     if [ "$tagTo" == "" ]; then
         tagRange=""
-        >&2 echo "Using commit messages of $tagFrom tag"
+        tagName=$tagFrom
     else
         tagRange=".."
-        >&2 echo "Using commit messages of $tagFrom..$tagTo range"
+        tagName=$tagTo
     fi
+    >&2 echo "Using commit messages of $tagName"
 
     # Initioalizacion
     OLDIFS="$IFS"
@@ -58,8 +61,8 @@ function buildChangelogBetweenTags () {
     tagDate=$(git log $tagTo -n 1  --simplify-by-decoration --pretty="format:%ai"|awk {'print $1'})
     commitWord="commit"
     commitList=$(git log ${tagFrom}${tagRange}${tagTo} --no-merges --pretty=format:"%h %s%n")
-    changelog=()
     commitCount=0
+    changelog=()
     for commit in ${commitList}
     do
         hash=$(echo $commit|awk '{print $1}')
@@ -72,15 +75,23 @@ function buildChangelogBetweenTags () {
         fi
     done
     if [ $commitCount -gt 0 ]; then
-        echo -e "# $tagTo ($tagDate)\n"
+        if [ $changelogTitleWasPrinted -eq 0 ]; then
+            echo -e "# Changelog\n"
+            changelogTitleWasPrinted=1
+        fi
+        echo -e "## $tagName ($tagDate)\n"
         for number in $(seq 0 6)
         do
             type=$(getTypeByNumber $number)
-            [ "${changelog[$number]}" ] && echo -e "## $type\n\n${changelog[$number]}" | sort
+            chagngelog[$number]=$(echo -e "${changelog[$number]}" | sort)
+            if [ "${changelog[$number]}" ]; then
+                echo -e "### $type\n\n${changelog[$number]}"
+            fi
         done
     fi
     IFS="$OLDIFS"
 }
+changelogTitleWasPrinted=0
 currentTag=""
 nextTag=""
 tagList=$(git tag|tail -r)
