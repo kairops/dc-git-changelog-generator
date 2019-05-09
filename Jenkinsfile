@@ -19,8 +19,7 @@ pipeline {
             agent { label 'docker' }
             steps {
                 script {
-                    docker.build('kairops/git-changelog-generator:test', '--pull --no-cache .')
-                    jplDockerPush (cfg, "kairops/git-changelog-generator:test", cfg.releaseTag, ".", "https://registry.hub.docker.com", "cikairos-docker-credentials")
+                    jplDockerPush (cfg, "kairops/git-changelog-generator", "test", "--pull --no-cache .", "https://registry.hub.docker.com", "cikairos-docker-credentials")
                 }
             }
         }
