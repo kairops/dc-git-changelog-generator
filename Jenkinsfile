@@ -15,16 +15,33 @@ pipeline {
                 jplStart(cfg)
             }
         }
+        stage ('Build') {
+            agent { label 'docker' }
+            steps {
+                script {
+                    docker.build('kairops/git-changelog-generator:test', '--pull --no-cache .')
+                    jplDockerPush (cfg, "kairops/git-changelog-generator:test", cfg.releaseTag, ".", "https://registry.hub.docker.com", "cikairos-docker-credentials")
+                }
+            }
+        }
+        stage ('Test') {
+            agent { label 'docker' }
+            steps  {
+                sh 'bin/test.sh'
+            }
+        }
         stage ('Release confirm') {
-            when { expression { cfg.BRANCH_NAME.startsWith('release/v') || cfg.BRANCH_NAME.startsWith('hotfix/v') } }
+            when { expression { (cfg.BRANCH_NAME.startsWith('release/v') || cfg.BRANCH_NAME.startsWith('hotfix/v')) && cfg.promoteBuild.enabled } }
             steps {
                 jplPromoteBuild(cfg)
             }
         }
         stage ('Release finish') {
             agent { label 'master' }
-            when { expression { cfg.BRANCH_NAME.startsWith('release/v') || cfg.BRANCH_NAME.startsWith('hotfix/v') } }
+            when { expression { (cfg.BRANCH_NAME.startsWith('release/v') || cfg.BRANCH_NAME.startsWith('hotfix/v')) && cfg.promoteBuild.enabled } }
             steps {
+                jplDockerPush (cfg, "kairops/git-changelog-generator", cfg.releaseTag, ".", "https://registry.hub.docker.com", "cikairos-docker-credentials")
+                jplDockerPush (cfg, "kairops/git-changelog-generator", "latest", ".", "https://registry.hub.docker.com", "cikairos-docker-credentials")
                 jplCloseRelease(cfg)
             }
         }
