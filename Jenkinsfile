@@ -30,7 +30,7 @@ pipeline {
             }
         }
         stage ('Release confirm') {
-            when { expression { (cfg.BRANCH_NAME.startsWith('release/v') || cfg.BRANCH_NAME.startsWith('hotfix/v')) && cfg.promoteBuild.enabled } }
+            when { expression { cfg.BRANCH_NAME.startsWith('release/v') || cfg.BRANCH_NAME.startsWith('hotfix/v') } }
             steps {
                 jplPromoteBuild(cfg)
             }

@@ -1,6 +1,33 @@
+<a name="0.3.0"></a>
+# 0.3.0 (2019-05-09)
+
+
+### Build
+
+* Fix release confirm stage execution conditional ([a9d7fe4272ea7f2c6e6d72c63861347bb56be4c2](https://github.com/kairops/git-changelog-generator/commit/a9d7fe4272ea7f2c6e6d72c63861347bb56be4c2))
+
+### Fix
+
+* Remove unsupport options on jplDockerBuild ([2854e383f0a0db55cc49b9bee8cd84e2498a0b92](https://github.com/kairops/git-changelog-generator/commit/2854e383f0a0db55cc49b9bee8cd84e2498a0b92))
+* Use jplDockerPush function instead native docker build Jenkins ([024eaf3c0023ba65f1a419d416922346c1b5f88a](https://github.com/kairops/git-changelog-generator/commit/024eaf3c0023ba65f1a419d416922346c1b5f88a))
+
+### New
+
+* Add docker support based on slim image ([4ddb6ddfa3e9bdc58542827925977dc47fe06296](https://github.com/kairops/git-changelog-generator/commit/4ddb6ddfa3e9bdc58542827925977dc47fe06296))
+
+### Update
+
+* Use 'tac' command where available instead 'tail -r' ([d18a9174405839a31eed73851983b69b9426906b](https://github.com/kairops/git-changelog-generator/commit/d18a9174405839a31eed73851983b69b9426906b))
+
+
+
 <a name="0.2.0"></a>
 # 0.2.0 (2019-05-08)
 
+
+### Build
+
+* Update CHANGELOG.md to v0.2.0 with Red Panda JPL ([b578a204845237904f2bad2f97df933059ef6681](https://github.com/kairops/git-changelog-generator/commit/b578a204845237904f2bad2f97df933059ef6681))
 
 ### Fix
 
