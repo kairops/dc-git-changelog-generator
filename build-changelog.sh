@@ -9,6 +9,8 @@
 #   Fix - for a bug fix.
 #   Build - changes to build process only.
 #   Docs - changes to documentation only.
+#   Security - for security skills.
+#   Deprecated - for deprecated features.
 
 tac --version > /dev/null 2>&1 && reverseCMD="tac" || reverseCMD="tail -r"
 
@@ -21,6 +23,8 @@ function getNumberByType() {
         'Fix:') number=4;;
         'Build:') number=5;;
         'Docs:') number=6;;
+        'Security:') number=7;;
+        'Deprecated:') number=8;;
         *) number=-1;;
     esac
     echo -n $number
@@ -35,6 +39,8 @@ function getTypeByNumber() {
         4) type='Fix';;
         5) type='Build';;
         6) type='Docs';;
+        7) type='Security';;
+        8) type='Deprecated';;
     esac
     echo -n $type
 }
@@ -82,7 +88,7 @@ function buildChangelogBetweenTags () {
             changelogTitleWasPrinted=1
         fi
         echo -e "## $tagName ($tagDate)\n"
-        for number in $(seq 0 6)
+        for number in $(seq 0 8)
         do
             type=$(getTypeByNumber $number)
             chagngelog[$number]=$(echo -e "${changelog[$number]}" | sort)
