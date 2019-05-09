@@ -1,6 +1,20 @@
+<a name="0.4.1"></a>
+## 0.4.1 (2019-05-09)
+
+
+### Fix
+
+* Make changelogs to commits in the right form  ([d0306654630fc502e668930c80b91573f994df5e](https://github.com/kairops/git-changelog-generator/commit/d0306654630fc502e668930c80b91573f994df5e)), closes [#3](https://github.com/madoos/node-changelog-generator/issues/3)
+
+
+
 <a name="0.4.0"></a>
 # 0.4.0 (2019-05-09)
 
+
+### Build
+
+* Update CHANGELOG.md to v0.4.0 with Red Panda JPL ([bb9d12c5afbf82021ee75ee3a7d66593efcba640](https://github.com/kairops/git-changelog-generator/commit/bb9d12c5afbf82021ee75ee3a7d66593efcba640))
 
 ### Update
 
