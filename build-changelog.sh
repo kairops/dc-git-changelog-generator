@@ -10,6 +10,8 @@
 #   Build - changes to build process only.
 #   Docs - changes to documentation only.
 
+tac --version > /dev/null 2>&1 && reverseCMD="tac" || reverseCMD="tail -r"
+
 function getNumberByType() {
     case $1 in
         'Breaking:') number=0;;
@@ -50,7 +52,7 @@ function buildChangelogBetweenTags () {
         tagRange=".."
         tagName=$tagTo
     fi
-    >&2 echo "Using commit messages of $tagName"
+    >&2 echo ">>>> Using commit messages of $tagName"
 
     # Initioalizacion
     OLDIFS="$IFS"
@@ -94,7 +96,7 @@ function buildChangelogBetweenTags () {
 changelogTitleWasPrinted=0
 currentTag=""
 nextTag=""
-tagList=$(git tag|tail -r)
+tagList=$(git tag|$reverseCMD)
 for currentTag in $tagList
 do
   [[ $nextTag == "" ]] || buildChangelogBetweenTags $currentTag $nextTag
