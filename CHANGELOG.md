@@ -1,3 +1,13 @@
+<a name="0.4.0"></a>
+# 0.4.0 (2019-05-09)
+
+
+### Update
+
+* Add security and deprecated items  ([bccdcd44b0ceb88982d057b897c3f8115508a62e](https://github.com/kairops/git-changelog-generator/commit/bccdcd44b0ceb88982d057b897c3f8115508a62e)), closes [#1](https://github.com/madoos/node-changelog-generator/issues/1)
+
+
+
 <a name="0.3.0"></a>
 # 0.3.0 (2019-05-09)
 
@@ -5,6 +15,7 @@
 ### Build
 
 * Fix release confirm stage execution conditional ([a9d7fe4272ea7f2c6e6d72c63861347bb56be4c2](https://github.com/kairops/git-changelog-generator/commit/a9d7fe4272ea7f2c6e6d72c63861347bb56be4c2))
+* Update CHANGELOG.md to v0.3.0 with Red Panda JPL ([24620d46205a4490d26e86810addb84506bf53ed](https://github.com/kairops/git-changelog-generator/commit/24620d46205a4490d26e86810addb84506bf53ed))
 
 ### Fix
 
