@@ -65,7 +65,9 @@ function buildChangelogBetweenTags () {
     IFS=$'\n' # bash specific
     remoteURL=$(git ls-remote --get-url)
     remoteURL=${remoteURL%".git"}
-    remoteURL=$(echo $remoteURL|awk -F'@'  {'print "https://" $2'})
+    if [ ${remoteURL:0:3} == "git" ]; then
+        remoteURL=$(echo $remoteURL|awk -F'@'  {'print "https://" $2'}|sed "s#gitlab.com:#gitlab.com/#g"|sed "s#bitbucket.org:#bitbucket.org/#g")
+    fi
     tagDate=$(git log $tagTo -n 1  --simplify-by-decoration --pretty="format:%ai"|awk {'print $1'})
     commitWord="commit"
     commitList=$(git log ${tagFrom}${tagRange}${tagTo} --no-merges --pretty=format:"%h %s%n")
