@@ -46,7 +46,7 @@ function getTypeByNumber() {
 }
 
 function buildChangelogBetweenTags () {
-    local tagFrom tagTo tagRange tagName tagDate remoteURL commitWord commitList commitCount changelog commit hash type message number
+    local tagFrom tagTo tagRange tagName tagDate remoteURL commitWord commitList commitCount changelog commit hash type message number changelogTitle
 
     # Parameters
     tagFrom=$1
@@ -73,6 +73,11 @@ function buildChangelogBetweenTags () {
     commitList=$(git log ${tagFrom}${tagRange}${tagTo} --no-merges --pretty=format:"%h %s%n")
     commitCount=0
     changelog=()
+    if [ "$tagTo" == "HEAD" ]; then
+        changelogTitle="Unreleased"
+    else
+        changelogTitle=$(echo -n "$tagName ($tagDate)")
+    fi
     for commit in ${commitList}
     do
         hash=$(echo $commit|awk '{print $1}')
@@ -89,7 +94,7 @@ function buildChangelogBetweenTags () {
             echo -e "# Changelog\n"
             changelogTitleWasPrinted=1
         fi
-        echo -e "## $tagName ($tagDate)\n"
+        echo -e "## $changelogTitle\n"
         for number in $(seq 0 8)
         do
             type=$(getTypeByNumber $number)
@@ -101,16 +106,20 @@ function buildChangelogBetweenTags () {
     fi
     IFS="$OLDIFS"
 }
-changelogTitleWasPrinted=0
-currentTag=""
-nextTag=""
-tagList=$(git tag|$reverseCMD)
-for currentTag in $tagList
-do
-  [[ $nextTag == "" ]] || buildChangelogBetweenTags $currentTag $nextTag
-  nextTag=$currentTag
-done
+lastTag=$(git tag |tail -n1)
+if [ "$lastTag" != "" ]; then
+    changelogTitleWasPrinted=0
+    buildChangelogBetweenTags $lastTag HEAD
+    currentTag=""
+    nextTag=""
+    tagList=$(git tag|$reverseCMD)
+    for currentTag in $tagList
+    do
+        [[ $nextTag == "" ]] || buildChangelogBetweenTags $currentTag $nextTag
+        nextTag=$currentTag
+    done
 
-if [ "$currentTag" != "" ]; then
-    buildChangelogBetweenTags $currentTag
+    if [ "$currentTag" != "" ]; then
+        buildChangelogBetweenTags $currentTag
+    fi
 fi

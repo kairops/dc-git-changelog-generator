@@ -1,6 +1,21 @@
+<a name="0.5.0"></a>
+# 0.5.0 (2019-05-09)
+
+
+### Update
+
+* Add unrelease section  ([5ca177e5ced315d9cda7ab2354da5d0e70c71f36](https://github.com/kairops/git-changelog-generator/commit/5ca177e5ced315d9cda7ab2354da5d0e70c71f36)), closes [#2](https://github.com/madoos/node-changelog-generator/issues/2)
+
+
+
 <a name="0.4.1"></a>
 ## 0.4.1 (2019-05-09)
 
+
+### Build
+
+* Add Jenkinsfile ([425d2059d7ab6a7335186eb3e555915ba87a93ed](https://github.com/kairops/git-changelog-generator/commit/425d2059d7ab6a7335186eb3e555915ba87a93ed))
+* Update CHANGELOG.md to v0.4.1 with Red Panda JPL ([f267d5bad0ec5ffba55652355c368232e5eb7474](https://github.com/kairops/git-changelog-generator/commit/f267d5bad0ec5ffba55652355c368232e5eb7474))
 
 ### Fix
 
