@@ -69,7 +69,7 @@ function buildChangelogBetweenTags () {
         remoteURL=$(echo $remoteURL|awk -F'@'  {'print "https://" $2'}|sed "s#gitlab.com:#gitlab.com/#g"|sed "s#bitbucket.org:#bitbucket.org/#g")
     fi
     commitWord="commit"
-    commitList=$(git log ${tagFrom}${tagRange}${tagTo} --no-merges --pretty=format:"%h %s%n")
+    commitList=$(git log ${tagFrom}${tagRange}${tagTo} --no-merges --pretty=format:"%h %s")
     commitCount=0
     changelog=()
     if [ "$tagTo" == "HEAD" ]; then
