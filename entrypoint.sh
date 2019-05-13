@@ -54,11 +54,9 @@ function buildChangelogBetweenTags () {
     if [ "$tagTo" == "" ]; then
         tagRange=""
         tagName=$tagFrom
-        tagDate=$tagFrom
     else
         tagRange=".."
         tagName=$tagTo
-        tagDate=$tagTo
     fi
     >&2 echo ">>>> Using commit messages of $tagName"
 
@@ -77,7 +75,7 @@ function buildChangelogBetweenTags () {
     if [ "$tagTo" == "HEAD" ]; then
         changelogTitle="Unreleased"
     else
-        tagDate=$(git log $tagDate -n 1  --simplify-by-decoration --pretty="format:%ai"|awk {'print $1'})
+        tagDate=$(git log $tagName -n 1  --simplify-by-decoration --pretty="format:%ai"|awk {'print $1'})
         changelogTitle=$(echo -n "$tagName ($tagDate)")
     fi
     for commit in ${commitList}
