@@ -1,3 +1,18 @@
+<a name="0.6.1"></a>
+## 0.6.1 (2019-05-13)
+
+
+### Fix
+
+* Get the right date for the first release ([02dde8b0f4c2b73f5e4ab9886ab05529fdb9cfeb](https://github.com/kairops/dc-git-changelog-generator/commit/02dde8b0f4c2b73f5e4ab9886ab05529fdb9cfeb))
+* Use the right tag date ([00569ca656fe623cba633f0fcdf006cf43c6c8d0](https://github.com/kairops/dc-git-changelog-generator/commit/00569ca656fe623cba633f0fcdf006cf43c6c8d0))
+
+### Update
+
+* Refactor tagDate extraction ([dc38767db40bae6f32737238be655f34afa58ed9](https://github.com/kairops/dc-git-changelog-generator/commit/dc38767db40bae6f32737238be655f34afa58ed9))
+
+
+
 <a name="0.6.0"></a>
 # 0.6.0 (2019-05-10)
 
@@ -5,6 +20,10 @@
 ### Breaking
 
 * Convert the project to Docker Command function ([e46fc9c24f6431ce6fa2a1b838298a60b98a1c71](https://github.com/kairops/dc-git-changelog-generator/commit/e46fc9c24f6431ce6fa2a1b838298a60b98a1c71))
+
+### Build
+
+* Update CHANGELOG.md to v0.6.0 with Red Panda JPL ([02d7a4cc06cf540088ae061d67e5860173deffcd](https://github.com/kairops/dc-git-changelog-generator/commit/02d7a4cc06cf540088ae061d67e5860173deffcd))
 
 
 
