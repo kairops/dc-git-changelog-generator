@@ -68,7 +68,6 @@ function buildChangelogBetweenTags () {
     if [ ${remoteURL:0:3} == "git" ]; then
         remoteURL=$(echo $remoteURL|awk -F'@'  {'print "https://" $2'}|sed "s#gitlab.com:#gitlab.com/#g"|sed "s#bitbucket.org:#bitbucket.org/#g")
     fi
-    tagDate=$(git log $tagTo -n 1  --simplify-by-decoration --pretty="format:%ai"|awk {'print $1'})
     commitWord="commit"
     commitList=$(git log ${tagFrom}${tagRange}${tagTo} --no-merges --pretty=format:"%h %s%n")
     commitCount=0
@@ -76,6 +75,7 @@ function buildChangelogBetweenTags () {
     if [ "$tagTo" == "HEAD" ]; then
         changelogTitle="Unreleased"
     else
+        tagDate=$(git log $tagFrom -n 1  --simplify-by-decoration --pretty="format:%ai"|awk {'print $1'})
         changelogTitle=$(echo -n "$tagName ($tagDate)")
     fi
     for commit in ${commitList}
