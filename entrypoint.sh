@@ -75,7 +75,7 @@ function buildChangelogBetweenTags () {
     if [ "$tagTo" == "HEAD" ]; then
         changelogTitle="Unreleased"
     else
-        tagDate=$(git log $tagFrom -n 1  --simplify-by-decoration --pretty="format:%ai"|awk {'print $1'})
+        tagDate=$(git log $tagName -n 1  --simplify-by-decoration --pretty="format:%ai"|awk {'print $1'})
         changelogTitle=$(echo -n "$tagName ($tagDate)")
     fi
     for commit in ${commitList}
