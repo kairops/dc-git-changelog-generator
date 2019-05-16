@@ -8,9 +8,9 @@ Its a part of the Docker Command series
 
 Execute the following within your repository folder:
 
-- Using Bash: `./entrypoint.sh > CHANGELOG.md`
-- Using Docker: `docker run --rm -v $(pwd):/workspace kairops/dc-git-changelog-generator > CHANGELOG.md`
-- Using docker-command-launcher: `kd git-changelog-generator > CHANGELOG.md`
+- Using Bash: `cd [git-repository-dir]; ./entrypoint.sh > CHANGELOG.md`
+- Using Docker: `cd [git-repository-dir]; docker run --rm -v $(pwd):/workspace kairops/dc-git-changelog-generator > CHANGELOG.md`
+- Using docker-command-launcher: `kd git-changelog-generator [git-repository-dir] > CHANGELOG.md`
 
 ## Considerations
 

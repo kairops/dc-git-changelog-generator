@@ -1,6 +1,6 @@
 #!groovy
 
-@Library('github.com/red-panda-ci/jenkins-pipeline-library@v2.7.0') _
+@Library('github.com/red-panda-ci/jenkins-pipeline-library@v2.9.1') _
 
 // Initialize global config
 cfg = jplConfig('dc-git-changelog-generator', 'bash', '', [slack: '#integrations', email:'redpandaci+dc-git-changelog-generator@gmail.com'])

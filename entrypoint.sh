@@ -12,6 +12,16 @@
 #   Security - for security skills.
 #   Deprecated - for deprecated features.
 
+set -eo pipefail
+
+function echo_debug () {
+    if [ "$KD_DEBUG" == "1" ]; then
+        echo >&2 ">>>> DEBUG >>>>> $(date "+%Y-%m-%d %H:%M:%S") $KD_NAME: $@"
+    fi
+}
+KD_NAME="git-changelog-generator"
+echo_debug "begin"
+
 tac --version > /dev/null 2>&1 && reverseCMD="tac" || reverseCMD="tail -r"
 
 function getNumberByType() {
@@ -48,6 +58,8 @@ function getTypeByNumber() {
 function buildChangelogBetweenTags () {
     local tagFrom tagTo tagRange tagName tagDate remoteURL commitWord commitList commitCount changelog commit hash type message number changelogTitle
 
+    echo -e "# Changelog\n"
+
     # Parameters
     tagFrom=$1
     tagTo=$2
@@ -58,7 +70,7 @@ function buildChangelogBetweenTags () {
         tagRange=".."
         tagName=$tagTo
     fi
-    >&2 echo ">>>> Using commit messages of $tagName"
+    >&2 echo_debug ">>>> Using commit messages of $tagName"
 
     # Initioalizacion
     OLDIFS="$IFS"
@@ -69,7 +81,7 @@ function buildChangelogBetweenTags () {
         remoteURL=$(echo $remoteURL|awk -F'@'  {'print "https://" $2'}|sed "s#gitlab.com:#gitlab.com/#g"|sed "s#bitbucket.org:#bitbucket.org/#g")
     fi
     commitWord="commit"
-    commitList=$(git log ${tagFrom}${tagRange}${tagTo} --no-merges --pretty=format:"%h %s%n")
+    commitList=$(git log ${tagFrom}${tagRange}${tagTo} --no-merges --pretty=format:"%h %s")
     commitCount=0
     changelog=()
     if [ "$tagTo" == "HEAD" ]; then
@@ -90,10 +102,6 @@ function buildChangelogBetweenTags () {
         fi
     done
     if [ $commitCount -gt 0 ]; then
-        if [ $changelogTitleWasPrinted -eq 0 ]; then
-            echo -e "# Changelog\n"
-            changelogTitleWasPrinted=1
-        fi
         echo -e "## $changelogTitle\n"
         for number in $(seq 0 8)
         do
@@ -108,7 +116,6 @@ function buildChangelogBetweenTags () {
 }
 lastTag=$(git tag |tail -n1)
 if [ "$lastTag" != "" ]; then
-    changelogTitleWasPrinted=0
     buildChangelogBetweenTags $lastTag HEAD
     currentTag=""
     nextTag=""
