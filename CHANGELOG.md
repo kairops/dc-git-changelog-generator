@@ -1,133 +1,137 @@
-<a name="0.6.1"></a>
-## 0.6.1 (2019-05-13)
+### Update
 
+* Add debug option ([17f487b](https://github.com:kairops/dc-git-changelog-generator/commit/17f487b))
 
 ### Fix
 
-* Get the right date for the first release ([02dde8b0f4c2b73f5e4ab9886ab05529fdb9cfeb](https://github.com/kairops/dc-git-changelog-generator/commit/02dde8b0f4c2b73f5e4ab9886ab05529fdb9cfeb))
-* Use the right tag date ([00569ca656fe623cba633f0fcdf006cf43c6c8d0](https://github.com/kairops/dc-git-changelog-generator/commit/00569ca656fe623cba633f0fcdf006cf43c6c8d0))
+* Remove unnecesary line break on git system call ([368a3df](https://github.com:kairops/dc-git-changelog-generator/commit/368a3df))
+
+### Build
+
+* Update jpl to v2.9.1 ([29cc4de](https://github.com:kairops/dc-git-changelog-generator/commit/29cc4de))
+
+### Docs
+
+* Update main README ([e3431d4](https://github.com:kairops/dc-git-changelog-generator/commit/e3431d4))
+
+# Changelog
+
+## v0.6.1 (2019-05-13)
 
 ### Update
 
-* Refactor tagDate extraction ([dc38767db40bae6f32737238be655f34afa58ed9](https://github.com/kairops/dc-git-changelog-generator/commit/dc38767db40bae6f32737238be655f34afa58ed9))
+* Refactor tagDate extraction ([dc38767](https://github.com:kairops/dc-git-changelog-generator/commit/dc38767))
 
+### Fix
 
+* Use the right tag date ([00569ca](https://github.com:kairops/dc-git-changelog-generator/commit/00569ca))
+* Get the right date for the first release ([02dde8b](https://github.com:kairops/dc-git-changelog-generator/commit/02dde8b))
 
-<a name="0.6.0"></a>
-# 0.6.0 (2019-05-10)
+### Build
 
+* Update CHANGELOG.md to v0.6.1 with Red Panda JPL ([9fe5a19](https://github.com:kairops/dc-git-changelog-generator/commit/9fe5a19))
+
+# Changelog
+
+## v0.6.0 (2019-05-10)
 
 ### Breaking
 
-* Convert the project to Docker Command function ([e46fc9c24f6431ce6fa2a1b838298a60b98a1c71](https://github.com/kairops/dc-git-changelog-generator/commit/e46fc9c24f6431ce6fa2a1b838298a60b98a1c71))
+* Convert the project to Docker Command function ([e46fc9c](https://github.com:kairops/dc-git-changelog-generator/commit/e46fc9c))
 
 ### Build
 
-* Update CHANGELOG.md to v0.6.0 with Red Panda JPL ([02d7a4cc06cf540088ae061d67e5860173deffcd](https://github.com/kairops/dc-git-changelog-generator/commit/02d7a4cc06cf540088ae061d67e5860173deffcd))
+* Update CHANGELOG.md to v0.6.0 with Red Panda JPL ([02d7a4c](https://github.com:kairops/dc-git-changelog-generator/commit/02d7a4c))
 
+# Changelog
 
-
-<a name="0.5.0"></a>
-# 0.5.0 (2019-05-09)
-
-
-### Build
-
-* Update CHANGELOG.md to v0.5.0 with Red Panda JPL ([4a01bc86f45a8cfc161bae10d204b080d1a0b674](https://github.com/kairops/dc-git-changelog-generator/commit/4a01bc86f45a8cfc161bae10d204b080d1a0b674))
+## v0.5.0 (2019-05-09)
 
 ### Update
 
-* Add unrelease section  ([5ca177e5ced315d9cda7ab2354da5d0e70c71f36](https://github.com/kairops/dc-git-changelog-generator/commit/5ca177e5ced315d9cda7ab2354da5d0e70c71f36)), closes [#2](https://github.com/madoos/node-changelog-generator/issues/2)
-
-
-
-<a name="0.4.1"></a>
-## 0.4.1 (2019-05-09)
-
+* Add unrelease section (fixes #2) ([5ca177e](https://github.com:kairops/dc-git-changelog-generator/commit/5ca177e))
 
 ### Build
 
-* Add Jenkinsfile ([425d2059d7ab6a7335186eb3e555915ba87a93ed](https://github.com/kairops/dc-git-changelog-generator/commit/425d2059d7ab6a7335186eb3e555915ba87a93ed))
-* Update CHANGELOG.md to v0.4.1 with Red Panda JPL ([f267d5bad0ec5ffba55652355c368232e5eb7474](https://github.com/kairops/dc-git-changelog-generator/commit/f267d5bad0ec5ffba55652355c368232e5eb7474))
+* Update CHANGELOG.md to v0.5.0 with Red Panda JPL ([4a01bc8](https://github.com:kairops/dc-git-changelog-generator/commit/4a01bc8))
+
+# Changelog
+
+## v0.4.1 (2019-05-09)
 
 ### Fix
 
-* Make changelogs to commits in the right form  ([d0306654630fc502e668930c80b91573f994df5e](https://github.com/kairops/dc-git-changelog-generator/commit/d0306654630fc502e668930c80b91573f994df5e)), closes [#3](https://github.com/madoos/node-changelog-generator/issues/3)
-
-
-
-<a name="0.4.0"></a>
-# 0.4.0 (2019-05-09)
-
+* Make changelogs to commits in the right form (fixes #3) ([d030665](https://github.com:kairops/dc-git-changelog-generator/commit/d030665))
 
 ### Build
 
-* Update CHANGELOG.md to v0.4.0 with Red Panda JPL ([bb9d12c5afbf82021ee75ee3a7d66593efcba640](https://github.com/kairops/dc-git-changelog-generator/commit/bb9d12c5afbf82021ee75ee3a7d66593efcba640))
+* Update CHANGELOG.md to v0.4.1 with Red Panda JPL ([f267d5b](https://github.com:kairops/dc-git-changelog-generator/commit/f267d5b))
+* Add Jenkinsfile ([425d205](https://github.com:kairops/dc-git-changelog-generator/commit/425d205))
+
+# Changelog
+
+## v0.4.0 (2019-05-09)
 
 ### Update
 
-* Add security and deprecated items  ([bccdcd44b0ceb88982d057b897c3f8115508a62e](https://github.com/kairops/dc-git-changelog-generator/commit/bccdcd44b0ceb88982d057b897c3f8115508a62e)), closes [#1](https://github.com/madoos/node-changelog-generator/issues/1)
-
-
-
-<a name="0.3.0"></a>
-# 0.3.0 (2019-05-09)
-
+* Add security and deprecated items (fixes #1) ([bccdcd4](https://github.com:kairops/dc-git-changelog-generator/commit/bccdcd4))
 
 ### Build
 
-* Fix release confirm stage execution conditional ([a9d7fe4272ea7f2c6e6d72c63861347bb56be4c2](https://github.com/kairops/dc-git-changelog-generator/commit/a9d7fe4272ea7f2c6e6d72c63861347bb56be4c2))
-* Update CHANGELOG.md to v0.3.0 with Red Panda JPL ([24620d46205a4490d26e86810addb84506bf53ed](https://github.com/kairops/dc-git-changelog-generator/commit/24620d46205a4490d26e86810addb84506bf53ed))
+* Update CHANGELOG.md to v0.4.0 with Red Panda JPL ([bb9d12c](https://github.com:kairops/dc-git-changelog-generator/commit/bb9d12c))
 
-### Fix
+# Changelog
 
-* Remove unsupport options on jplDockerBuild ([2854e383f0a0db55cc49b9bee8cd84e2498a0b92](https://github.com/kairops/dc-git-changelog-generator/commit/2854e383f0a0db55cc49b9bee8cd84e2498a0b92))
-* Use jplDockerPush function instead native docker build Jenkins ([024eaf3c0023ba65f1a419d416922346c1b5f88a](https://github.com/kairops/dc-git-changelog-generator/commit/024eaf3c0023ba65f1a419d416922346c1b5f88a))
+## v0.3.0 (2019-05-09)
 
 ### New
 
-* Add docker support based on slim image ([4ddb6ddfa3e9bdc58542827925977dc47fe06296](https://github.com/kairops/dc-git-changelog-generator/commit/4ddb6ddfa3e9bdc58542827925977dc47fe06296))
+* Add docker support based on slim image ([4ddb6dd](https://github.com:kairops/dc-git-changelog-generator/commit/4ddb6dd))
 
 ### Update
 
-* Use 'tac' command where available instead 'tail -r' ([d18a9174405839a31eed73851983b69b9426906b](https://github.com/kairops/dc-git-changelog-generator/commit/d18a9174405839a31eed73851983b69b9426906b))
-
-
-
-<a name="0.2.0"></a>
-# 0.2.0 (2019-05-08)
-
-
-### Build
-
-* Update CHANGELOG.md to v0.2.0 with Red Panda JPL ([b578a204845237904f2bad2f97df933059ef6681](https://github.com/kairops/dc-git-changelog-generator/commit/b578a204845237904f2bad2f97df933059ef6681))
+* Use 'tac' command where available instead 'tail -r' ([d18a917](https://github.com:kairops/dc-git-changelog-generator/commit/d18a917))
 
 ### Fix
 
-* Include the first tag in the build process ([33753dabf0ae233beace75026997f6ffaf8fcf49](https://github.com/kairops/dc-git-changelog-generator/commit/33753dabf0ae233beace75026997f6ffaf8fcf49))
-
-### Update
-
-* Improve markdown format ([684720c393725132fb3fe6037daac1c966c765ed](https://github.com/kairops/dc-git-changelog-generator/commit/684720c393725132fb3fe6037daac1c966c765ed))
-
-
-
-<a name="0.1.0"></a>
-# 0.1.0 (2019-05-08)
-
+* Remove unsupport options on jplDockerBuild ([2854e38](https://github.com:kairops/dc-git-changelog-generator/commit/2854e38))
+* Use jplDockerPush function instead native docker build Jenkins ([024eaf3](https://github.com:kairops/dc-git-changelog-generator/commit/024eaf3))
 
 ### Build
 
-* Add Jenkinsfile ([3d4f84d8c9d23bfb946d1f05fba57da8a146ba98](https://github.com/kairops/dc-git-changelog-generator/commit/3d4f84d8c9d23bfb946d1f05fba57da8a146ba98))
-* Update CHANGELOG.md to v0.1.0 with Red Panda JPL ([dadd52f5c2e238c719c641c1a13c521470107b36](https://github.com/kairops/dc-git-changelog-generator/commit/dadd52f5c2e238c719c641c1a13c521470107b36))
+* Update CHANGELOG.md to v0.3.0 with Red Panda JPL ([24620d4](https://github.com:kairops/dc-git-changelog-generator/commit/24620d4))
+* Fix release confirm stage execution conditional ([a9d7fe4](https://github.com:kairops/dc-git-changelog-generator/commit/a9d7fe4))
+
+# Changelog
+
+## v0.2.0 (2019-05-08)
+
+### Update
+
+* Improve markdown format ([684720c](https://github.com:kairops/dc-git-changelog-generator/commit/684720c))
+
+### Fix
+
+* Include the first tag in the build process ([33753da](https://github.com:kairops/dc-git-changelog-generator/commit/33753da))
+
+### Build
+
+* Update CHANGELOG.md to v0.2.0 with Red Panda JPL ([b578a20](https://github.com:kairops/dc-git-changelog-generator/commit/b578a20))
+
+# Changelog
+
+## v0.1.0 (2019-05-08)
 
 ### New
 
-* Initial import ([df01a2e2cce13dda8c5dce548a728efd39245b3f](https://github.com/kairops/dc-git-changelog-generator/commit/df01a2e2cce13dda8c5dce548a728efd39245b3f))
+* Initial import ([df01a2e](https://github.com:kairops/dc-git-changelog-generator/commit/df01a2e))
 
 ### Upgrade
 
-* Fully functional version ([666c3df58023ea931e871c9363f928e92c963c79](https://github.com/kairops/dc-git-changelog-generator/commit/666c3df58023ea931e871c9363f928e92c963c79))
+* Fully functional version ([666c3df](https://github.com:kairops/dc-git-changelog-generator/commit/666c3df))
 
+### Build
 
+* Update CHANGELOG.md to v0.1.0 with Red Panda JPL ([dadd52f](https://github.com:kairops/dc-git-changelog-generator/commit/dadd52f))
+* Add Jenkinsfile ([3d4f84d](https://github.com:kairops/dc-git-changelog-generator/commit/3d4f84d))
 
