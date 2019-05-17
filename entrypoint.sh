@@ -58,8 +58,6 @@ function getTypeByNumber() {
 function buildChangelogBetweenTags () {
     local tagFrom tagTo tagRange tagName tagDate remoteURL commitWord commitList commitCount changelog commit hash type message number changelogTitle
 
-    echo -e "# Changelog\n"
-
     # Parameters
     tagFrom=$1
     tagTo=$2
@@ -114,7 +112,9 @@ function buildChangelogBetweenTags () {
     fi
     IFS="$OLDIFS"
 }
-lastTag=$(git tag |tail -n1)
+
+echo -e "# Changelog\n"
+lastTag=$(git tag | tail -n1)
 if [ "$lastTag" != "" ]; then
     buildChangelogBetweenTags $lastTag HEAD
     currentTag=""
@@ -130,3 +130,4 @@ if [ "$lastTag" != "" ]; then
         buildChangelogBetweenTags $currentTag
     fi
 fi
+echo_debug "end"
