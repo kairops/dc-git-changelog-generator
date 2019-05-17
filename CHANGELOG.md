@@ -1,3 +1,11 @@
+* Don't show changelog title more than once ([7d6c5f3](https://github.com:kairops/dc-git-changelog-generator/commit/7d6c5f3))
+
+### Build
+
+* Use latest alpine docker image ([e07159a](https://github.com:kairops/dc-git-changelog-generator/commit/e07159a))
+
+## v0.7.0 (2019-05-16)
+
 ### Update
 
 * Add debug option ([17f487b](https://github.com:kairops/dc-git-changelog-generator/commit/17f487b))
@@ -8,13 +16,12 @@
 
 ### Build
 
+* Update CHANGELOG.md to v0.7.0 with Red Panda JPL ([96ffaca](https://github.com:kairops/dc-git-changelog-generator/commit/96ffaca))
 * Update jpl to v2.9.1 ([29cc4de](https://github.com:kairops/dc-git-changelog-generator/commit/29cc4de))
 
 ### Docs
 
 * Update main README ([e3431d4](https://github.com:kairops/dc-git-changelog-generator/commit/e3431d4))
-
-# Changelog
 
 ## v0.6.1 (2019-05-13)
 
@@ -31,8 +38,6 @@
 
 * Update CHANGELOG.md to v0.6.1 with Red Panda JPL ([9fe5a19](https://github.com:kairops/dc-git-changelog-generator/commit/9fe5a19))
 
-# Changelog
-
 ## v0.6.0 (2019-05-10)
 
 ### Breaking
@@ -43,8 +48,6 @@
 
 * Update CHANGELOG.md to v0.6.0 with Red Panda JPL ([02d7a4c](https://github.com:kairops/dc-git-changelog-generator/commit/02d7a4c))
 
-# Changelog
-
 ## v0.5.0 (2019-05-09)
 
 ### Update
@@ -54,8 +57,6 @@
 ### Build
 
 * Update CHANGELOG.md to v0.5.0 with Red Panda JPL ([4a01bc8](https://github.com:kairops/dc-git-changelog-generator/commit/4a01bc8))
-
-# Changelog
 
 ## v0.4.1 (2019-05-09)
 
@@ -68,8 +69,6 @@
 * Update CHANGELOG.md to v0.4.1 with Red Panda JPL ([f267d5b](https://github.com:kairops/dc-git-changelog-generator/commit/f267d5b))
 * Add Jenkinsfile ([425d205](https://github.com:kairops/dc-git-changelog-generator/commit/425d205))
 
-# Changelog
-
 ## v0.4.0 (2019-05-09)
 
 ### Update
@@ -79,8 +78,6 @@
 ### Build
 
 * Update CHANGELOG.md to v0.4.0 with Red Panda JPL ([bb9d12c](https://github.com:kairops/dc-git-changelog-generator/commit/bb9d12c))
-
-# Changelog
 
 ## v0.3.0 (2019-05-09)
 
@@ -102,8 +99,6 @@
 * Update CHANGELOG.md to v0.3.0 with Red Panda JPL ([24620d4](https://github.com:kairops/dc-git-changelog-generator/commit/24620d4))
 * Fix release confirm stage execution conditional ([a9d7fe4](https://github.com:kairops/dc-git-changelog-generator/commit/a9d7fe4))
 
-# Changelog
-
 ## v0.2.0 (2019-05-08)
 
 ### Update
@@ -117,8 +112,6 @@
 ### Build
 
 * Update CHANGELOG.md to v0.2.0 with Red Panda JPL ([b578a20](https://github.com:kairops/dc-git-changelog-generator/commit/b578a20))
-
-# Changelog
 
 ## v0.1.0 (2019-05-08)
 
