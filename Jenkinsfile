@@ -33,7 +33,7 @@ pipeline {
             agent { label 'master' }
             when { branch 'release/new' }
             steps {
-                makeRelease()
+                jplMakeRelease(cfg)
             }
         }
         stage ('Release confirm') {
