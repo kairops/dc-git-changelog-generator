@@ -1,6 +1,6 @@
 #!groovy
 
-@Library('github.com/red-panda-ci/jenkins-pipeline-library@v3.0.0') _
+@Library('github.com/red-panda-ci/jenkins-pipeline-library@v3.0.1') _
 
 // Initialize global config
 cfg = jplConfig('dc-git-changelog-generator', 'bash', '', [slack: '#integrations', email:'redpandaci+dc-git-changelog-generator@gmail.com'])
@@ -33,7 +33,8 @@ pipeline {
             agent { label 'master' }
             when { branch 'release/new' }
             steps {
-                makeRelease()
+                script { cfg.promoteBuild.enabled = true }
+                jplMakeRelease(cfg)
             }
         }
         stage ('Release confirm') {
@@ -64,7 +65,6 @@ pipeline {
         ansiColor('xterm')
         buildDiscarder(logRotator(artifactNumToKeepStr: '20',artifactDaysToKeepStr: '30'))
         disableConcurrentBuilds()
-        skipDefaultCheckout()
         timeout(time: 1, unit: 'DAYS')
     }
 }
