@@ -1,6 +1,6 @@
 #!groovy
 
-@Library('github.com/red-panda-ci/jenkins-pipeline-library@v2.9.1') _
+@Library('github.com/red-panda-ci/jenkins-pipeline-library@v3.0.0') _
 
 // Initialize global config
 cfg = jplConfig('dc-git-changelog-generator', 'bash', '', [slack: '#integrations', email:'redpandaci+dc-git-changelog-generator@gmail.com'])
@@ -27,6 +27,13 @@ pipeline {
             agent { label 'docker' }
             steps  {
                 sh 'bin/test.sh'
+            }
+        }
+        stage ('Make release'){
+            agent { label 'master' }
+            when { branch 'release/new' }
+            steps {
+                makeRelease()
             }
         }
         stage ('Release confirm') {
