@@ -1,7 +1,25 @@
+# Changelog
+
+## v0.7.2 (2019-05-22)
+
+### Fix
+
+* Use the right remote url in github+ssh repositories ([52c9037](https://github.com:kairops/dc-git-changelog-generator/commit/52c9037))
+
+### Build
+
+* Update Auto Release Log adding v0.7.2 info with JPL ([0b8bf0c](https://github.com:kairops/dc-git-changelog-generator/commit/0b8bf0c))
+* Update to jpl v3.0.0 and add auto release step ([60370ea](https://github.com:kairops/dc-git-changelog-generator/commit/60370ea))
+
+## v0.7.1 (2019-05-17)
+
+### Fix
+
 * Don't show changelog title more than once ([7d6c5f3](https://github.com:kairops/dc-git-changelog-generator/commit/7d6c5f3))
 
 ### Build
 
+* Update CHANGELOG.md to v0.7.1 with Red Panda JPL ([769ea99](https://github.com:kairops/dc-git-changelog-generator/commit/769ea99))
 * Use latest alpine docker image ([e07159a](https://github.com:kairops/dc-git-changelog-generator/commit/e07159a))
 
 ## v0.7.0 (2019-05-16)
