@@ -1,5 +1,16 @@
 # Changelog
 
+## v0.7.4 (2019-06-13)
+
+### Build
+
+* Update Auto Release Log adding v0.7.4 info with JPL ([47f33a9](https://github.com/kairops/dc-git-changelog-generator/commit/47f33a9))
+* Fix docker image tag extraction ([4ae9c26](https://github.com/kairops/dc-git-changelog-generator/commit/4ae9c26))
+
+### Docs
+
+* Generate v0.7.3 changelog with JPL ([56be7e5](https://github.com/kairops/dc-git-changelog-generator/commit/56be7e5))
+
 ## v0.7.3 (2019-06-13)
 
 ### Build
