@@ -33,6 +33,7 @@ pipeline {
             agent { label 'docker' }
             when { branch 'release/new' }
             steps {
+                script { cfg.releaseTag = sh (script: "kd get-next-release-number .", returnStdout: true).trim() }
                 jplDockerPush (cfg, "kairops/dc-git-changelog-generator", cfg.releaseTag, ".", "https://registry.hub.docker.com", "cikairos-docker-credentials")
                 jplDockerPush (cfg, "kairops/dc-git-changelog-generator", "latest", ".", "https://registry.hub.docker.com", "cikairos-docker-credentials")
                 jplMakeRelease(cfg, true)
