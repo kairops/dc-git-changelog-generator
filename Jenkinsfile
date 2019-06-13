@@ -1,6 +1,6 @@
 #!groovy
 
-@Library('github.com/red-panda-ci/jenkins-pipeline-library@v3.0.0') _
+@Library('github.com/red-panda-ci/jenkins-pipeline-library@v3.1.6') _
 
 // Initialize global config
 cfg = jplConfig('dc-git-changelog-generator', 'bash', '', [slack: '#integrations', email:'redpandaci+dc-git-changelog-generator@gmail.com'])
@@ -49,7 +49,7 @@ pipeline {
             steps {
                 jplDockerPush (cfg, "kairops/dc-git-changelog-generator", cfg.releaseTag, ".", "https://registry.hub.docker.com", "cikairos-docker-credentials")
                 jplDockerPush (cfg, "kairops/dc-git-changelog-generator", "latest", ".", "https://registry.hub.docker.com", "cikairos-docker-credentials")
-                jplCloseRelease(cfg)
+                jplMakeRelease(cfg, true)
             }
         }
     }
@@ -65,7 +65,6 @@ pipeline {
         ansiColor('xterm')
         buildDiscarder(logRotator(artifactNumToKeepStr: '20',artifactDaysToKeepStr: '30'))
         disableConcurrentBuilds()
-        skipDefaultCheckout()
         timeout(time: 1, unit: 'DAYS')
     }
 }
