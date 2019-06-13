@@ -30,22 +30,8 @@ pipeline {
             }
         }
         stage ('Make release'){
-            agent { label 'master' }
+            agent { label 'docker' }
             when { branch 'release/new' }
-            steps {
-                script { cfg.promoteBuild.enabled = true }
-                jplMakeRelease(cfg)
-            }
-        }
-        stage ('Release confirm') {
-            when { expression { cfg.BRANCH_NAME.startsWith('release/v') || cfg.BRANCH_NAME.startsWith('hotfix/v') } }
-            steps {
-                jplPromoteBuild(cfg)
-            }
-        }
-        stage ('Release finish') {
-            agent { label 'master' }
-            when { expression { (cfg.BRANCH_NAME.startsWith('release/v') || cfg.BRANCH_NAME.startsWith('hotfix/v')) && cfg.promoteBuild.enabled } }
             steps {
                 jplDockerPush (cfg, "kairops/dc-git-changelog-generator", cfg.releaseTag, ".", "https://registry.hub.docker.com", "cikairos-docker-credentials")
                 jplDockerPush (cfg, "kairops/dc-git-changelog-generator", "latest", ".", "https://registry.hub.docker.com", "cikairos-docker-credentials")
