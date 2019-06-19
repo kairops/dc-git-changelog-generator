@@ -1,5 +1,19 @@
 # Changelog
 
+## v0.7.7 (2019-06-19)
+
+### Update
+
+* Make command compatible with git v1 ([8e9df17](https://github.com/kairops/dc-git-changelog-generator/commit/8e9df17))
+
+### Build
+
+* Update Auto Release Log adding v0.7.7 info with JPL ([c90e8d3](https://github.com/kairops/dc-git-changelog-generator/commit/c90e8d3))
+
+### Docs
+
+* Generate v0.7.6 changelog with JPL ([d749b25](https://github.com/kairops/dc-git-changelog-generator/commit/d749b25))
+
 ## v0.7.6 (2019-06-19)
 
 ### Update
