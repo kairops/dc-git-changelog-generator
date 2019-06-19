@@ -1,6 +1,6 @@
 FROM alpine
 
-RUN apk add --no-cache git bash coreutils
+RUN apk add --no-cache git bash
 
 ADD entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
