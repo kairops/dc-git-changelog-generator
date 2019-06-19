@@ -112,12 +112,12 @@ function buildChangelogBetweenTags () {
 }
 
 echo -e "# Changelog\n"
-lastTag=$(git tag | xargs -I@ git log --format=format:"%ai @%n" -1 @ | sort -r | awk '{print $4}')
+lastTag=$(git describe --tags $(git rev-list --tags --max-count=1))
 if [ "$lastTag" != "" ]; then
     buildChangelogBetweenTags $lastTag HEAD
     currentTag=""
     nextTag=""
-    tagList=$(git tag --sort=-version:refname)
+    tagList=$(git tag | xargs -I@ git log --format=format:"%ai @%n" -1 @ | sort -r | awk '{print $4}')
     for currentTag in $tagList
     do
         [[ $nextTag == "" ]] || buildChangelogBetweenTags $currentTag $nextTag
