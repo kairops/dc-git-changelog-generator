@@ -114,7 +114,7 @@ function buildChangelogBetweenTags () {
 }
 
 echo -e "# Changelog\n"
-lastTag=$(git tag | tail -n1)
+lastTag=$(git describe --tags $(git rev-list --tags --max-count=1))
 if [ "$lastTag" != "" ]; then
     buildChangelogBetweenTags $lastTag HEAD
     currentTag=""
