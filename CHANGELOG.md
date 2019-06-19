@@ -1,5 +1,20 @@
 # Changelog
 
+## v0.7.5 (2019-06-19)
+
+### Fix
+
+* Sort tags in the right order ([7f43d71](https://github.com/kairops/dc-git-changelog-generator/commit/7f43d71))
+* Get the last release number in the right form ([a30edd8](https://github.com/kairops/dc-git-changelog-generator/commit/a30edd8))
+
+### Build
+
+* Update Auto Release Log adding v0.7.5 info with JPL ([d2e2417](https://github.com/kairops/dc-git-changelog-generator/commit/d2e2417))
+
+### Docs
+
+* Generate v0.7.4 changelog with JPL ([65d6f7f](https://github.com/kairops/dc-git-changelog-generator/commit/65d6f7f))
+
 ## v0.7.4 (2019-06-13)
 
 ### Build

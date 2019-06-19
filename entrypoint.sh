@@ -22,8 +22,6 @@ function echo_debug () {
 KD_NAME="git-changelog-generator"
 echo_debug "begin"
 
-tac --version > /dev/null 2>&1 && reverseCMD="tac" || reverseCMD="tail -r"
-
 function getNumberByType() {
     case $1 in
         'Breaking:') number=0;;
@@ -114,12 +112,12 @@ function buildChangelogBetweenTags () {
 }
 
 echo -e "# Changelog\n"
-lastTag=$(git tag | tail -n1)
+lastTag=$(git describe --tags $(git rev-list --tags --max-count=1))
 if [ "$lastTag" != "" ]; then
     buildChangelogBetweenTags $lastTag HEAD
     currentTag=""
     nextTag=""
-    tagList=$(git tag|$reverseCMD)
+    tagList=$(git tag --sort=-creatordate)
     for currentTag in $tagList
     do
         [[ $nextTag == "" ]] || buildChangelogBetweenTags $currentTag $nextTag
