@@ -117,7 +117,7 @@ if [ "$lastTag" != "" ]; then
     buildChangelogBetweenTags $lastTag HEAD
     currentTag=""
     nextTag=""
-    tagList=$(git tag --sort=-creatordate)
+    tagList=$(git tag --sort=-version:refname)
     for currentTag in $tagList
     do
         [[ $nextTag == "" ]] || buildChangelogBetweenTags $currentTag $nextTag

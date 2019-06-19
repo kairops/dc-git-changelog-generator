@@ -1,5 +1,19 @@
 # Changelog
 
+## v0.7.6 (2019-06-19)
+
+### Update
+
+* Add a more compatible git option for tag list extraction ([9a55023](https://github.com/kairops/dc-git-changelog-generator/commit/9a55023))
+
+### Build
+
+* Update Auto Release Log adding v0.7.6 info with JPL ([1c55f17](https://github.com/kairops/dc-git-changelog-generator/commit/1c55f17))
+
+### Docs
+
+* Generate v0.7.5 changelog with JPL ([68962f3](https://github.com/kairops/dc-git-changelog-generator/commit/68962f3))
+
 ## v0.7.5 (2019-06-19)
 
 ### Fix
