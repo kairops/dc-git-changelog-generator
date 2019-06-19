@@ -1,5 +1,19 @@
 # Changelog
 
+## v0.7.8 (2019-06-19)
+
+### Fix
+
+* Use compatible tag list in the right place ([4eddcf3](https://github.com/kairops/dc-git-changelog-generator/commit/4eddcf3))
+
+### Build
+
+* Update Auto Release Log adding v0.7.8 info with JPL ([3c7f251](https://github.com/kairops/dc-git-changelog-generator/commit/3c7f251))
+
+### Docs
+
+* Generate v0.7.7 changelog with JPL ([7fc8140](https://github.com/kairops/dc-git-changelog-generator/commit/7fc8140))
+
 ## v0.7.7 (2019-06-19)
 
 ### Update
