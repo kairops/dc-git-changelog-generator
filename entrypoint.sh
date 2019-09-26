@@ -73,7 +73,7 @@ function buildChangelogBetweenTags () {
     IFS=$'\n' # bash specific
     remoteURL=$(git ls-remote --get-url)
     remoteURL=${remoteURL%".git"}
-    if [ ${remoteURL:0:3} == "git" ]; then
+    if [ ${remoteURL:0:4} == "git@" ] || [ ${remoteURL:0:6} == "ssh://" ]; then
         remoteURL=$(echo $remoteURL|awk -F'@'  {'print "https://" $2'}|sed "s#github.com:#github.com/#g"|sed "s#gitlab.com:#gitlab.com/#g"|sed "s#bitbucket.org:#bitbucket.org/#g")
     fi
     commitWord="commit"
