@@ -1,5 +1,19 @@
 # Changelog
 
+## v0.7.9 (2019-09-26)
+
+### Update
+
+* Add support to ssh:// remote type ([4970933](https://github.com/kairops/dc-git-changelog-generator/commit/4970933))
+
+### Build
+
+* Update Auto Release Log adding v0.7.9 info with JPL ([e84e5ed](https://github.com/kairops/dc-git-changelog-generator/commit/e84e5ed))
+
+### Docs
+
+* Generate v0.7.8 changelog with JPL ([861ee3c](https://github.com/kairops/dc-git-changelog-generator/commit/861ee3c))
+
 ## v0.7.8 (2019-06-19)
 
 ### Fix
