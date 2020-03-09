@@ -77,7 +77,7 @@ function buildChangelogBetweenTags () {
     commitList=$(git log ${tagFrom}${tagRange}${tagTo} --no-merges --pretty=format:"%h %s")
     commitCount=0
     changelog=()
-    if [ "$tagTo" == "HEAD" ]; then
+    if [ "$tagTo" == "HEAD" ] || [ "$tagTo" == "" ]; then
         changelogTitle="Unreleased"
     else
         tagDate=$(git log $tagName -n 1  --simplify-by-decoration --pretty="format:%ai"|awk {'print $1'})
@@ -109,20 +109,18 @@ function buildChangelogBetweenTags () {
 }
 
 echo -e "# Changelog\n"
-lastTag=$(git describe --tags $(git rev-list --tags --max-count=1))
-if [ "$lastTag" != "" ]; then
-    buildChangelogBetweenTags $lastTag HEAD
-    currentTag=""
-    nextTag=""
-    tagList=$(git tag | xargs -I@ git log --format=format:"%ai @%n" -1 @ | sort -r | awk '{print $4}')
-    for currentTag in $tagList
-    do
-        [[ $nextTag == "" ]] || buildChangelogBetweenTags $currentTag $nextTag
-        nextTag=$currentTag
-    done
+lastTag=$(git describe --tags $(git rev-list --tags --max-count=1) 2> /dev/null || true)
+buildChangelogBetweenTags $lastTag HEAD
+currentTag=""
+nextTag=""
+tagList=$(git tag | xargs -I@ git log --format=format:"%ai @%n" -1 @ | sort -r | awk '{print $4}')
+for currentTag in $tagList
+do
+    [[ $nextTag == "" ]] || buildChangelogBetweenTags $currentTag $nextTag
+    nextTag=$currentTag
+done
 
-    if [ "$currentTag" != "" ]; then
-        buildChangelogBetweenTags $currentTag
-    fi
+if [ "$currentTag" != "" ]; then
+    buildChangelogBetweenTags $currentTag
 fi
 echo_debug "end"
