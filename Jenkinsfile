@@ -1,9 +1,9 @@
 #!groovy
 
-@Library('github.com/red-panda-ci/jenkins-pipeline-library@v3.1.6') _
+@Library('github.com/teecke/jenkins-pipeline-library@v3.4.1') _
 
 // Initialize global config
-cfg = jplConfig('dc-git-changelog-generator', 'bash', '', [slack: '#integrations', email:'redpandaci+dc-git-changelog-generator@gmail.com'])
+cfg = jplConfig('dc-git-changelog-generator', 'bash', '', [email:'redpandaci+dc-git-changelog-generator@gmail.com'])
 
 pipeline {
     agent none
