@@ -71,16 +71,13 @@ function buildChangelogBetweenTags () {
     # Initioalizacion
     OLDIFS="$IFS"
     IFS=$'\n' # bash specific
-    remoteURL=$(git ls-remote --get-url)
+    remoteURL="https://$(git ls-remote --get-url|sed 's|.*//||; s|.*@||')"
     remoteURL=${remoteURL%".git"}
-    if [ ${remoteURL:0:4} == "git@" ] || [ ${remoteURL:0:6} == "ssh://" ]; then
-        remoteURL=$(echo $remoteURL|awk -F'@'  {'print "https://" $2'}|sed "s#github.com:#github.com/#g"|sed "s#gitlab.com:#gitlab.com/#g"|sed "s#bitbucket.org:#bitbucket.org/#g")
-    fi
     commitWord="commit"
     commitList=$(git log ${tagFrom}${tagRange}${tagTo} --no-merges --pretty=format:"%h %s")
     commitCount=0
     changelog=()
-    if [ "$tagTo" == "HEAD" ]; then
+    if [ "$tagTo" == "HEAD" ] || [ "$tagTo" == "" ]; then
         changelogTitle="Unreleased"
     else
         tagDate=$(git log $tagName -n 1  --simplify-by-decoration --pretty="format:%ai"|awk {'print $1'})
@@ -112,20 +109,18 @@ function buildChangelogBetweenTags () {
 }
 
 echo -e "# Changelog\n"
-lastTag=$(git describe --tags $(git rev-list --tags --max-count=1))
-if [ "$lastTag" != "" ]; then
-    buildChangelogBetweenTags $lastTag HEAD
-    currentTag=""
-    nextTag=""
-    tagList=$(git tag | xargs -I@ git log --format=format:"%ai @%n" -1 @ | sort -r | awk '{print $4}')
-    for currentTag in $tagList
-    do
-        [[ $nextTag == "" ]] || buildChangelogBetweenTags $currentTag $nextTag
-        nextTag=$currentTag
-    done
+lastTag=$(git describe --tags $(git rev-list --tags --max-count=1) 2> /dev/null || true)
+buildChangelogBetweenTags $lastTag HEAD
+currentTag=""
+nextTag=""
+tagList=$(git tag | xargs -I@ git log --format=format:"%ai @%n" -1 @ | sort -r | awk '{print $4}')
+for currentTag in $tagList
+do
+    [[ $nextTag == "" ]] || buildChangelogBetweenTags $currentTag $nextTag
+    nextTag=$currentTag
+done
 
-    if [ "$currentTag" != "" ]; then
-        buildChangelogBetweenTags $currentTag
-    fi
+if [ "$currentTag" != "" ]; then
+    buildChangelogBetweenTags $currentTag
 fi
 echo_debug "end"
