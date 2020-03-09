@@ -1,5 +1,23 @@
 # Changelog
 
+## v1.0.0 (2020-03-09)
+
+### Breaking
+
+* Build changelog also when there are no tags in the repository ([2fe9697](https://github.com/kairops/dc-git-changelog-generator/commit/2fe9697))
+
+### Fix
+
+* Compose the repository URL in the right form ([11e8878](https://github.com/kairops/dc-git-changelog-generator/commit/11e8878))
+
+### Build
+
+* Update Auto Release Log adding v1.0.0 info with JPL ([1b1518b](https://github.com/kairops/dc-git-changelog-generator/commit/1b1518b))
+
+### Docs
+
+* Generate v0.7.9 changelog with JPL ([febd221](https://github.com/kairops/dc-git-changelog-generator/commit/febd221))
+
 ## v0.7.9 (2019-09-26)
 
 ### Update
