@@ -33,7 +33,7 @@ function getNumberByType() {
         'Docs:') number=6;;
         'Security:') number=7;;
         'Deprecated:') number=8;;
-        *) number=-1;;
+        *) number=9;;
     esac
     echo -n $number
 }
@@ -49,6 +49,7 @@ function getTypeByNumber() {
         6) type='Docs';;
         7) type='Security';;
         8) type='Deprecated';;
+        9) type='Misc';;
     esac
     echo -n $type
 }
@@ -77,9 +78,14 @@ function buildChangelogBetweenTags () {
     commitList=$(git log ${tagFrom}${tagRange}${tagTo} --no-merges --pretty=format:"%h %s")
     commitCount=0
     changelog=()
-    if [ "$tagTo" == "HEAD" ] || [ "$tagTo" == "" ]; then
-        changelogTitle="Unreleased"
-    else
+    changelogTitle=""
+    if [ "$unreleaseFlag" == false ]; then
+        if [ "$tagTo" == "HEAD" ] || [ "$tagTo" == "" ]; then
+            changelogTitle="Unreleased"
+            unreleaseFlag=true
+        fi
+    fi
+    if [ "$changelogTitle" == "" ]; then
         tagDate=$(git log $tagName -n 1  --simplify-by-decoration --pretty="format:%ai"|awk {'print $1'})
         changelogTitle=$(echo -n "$tagName ($tagDate)")
     fi
@@ -90,13 +96,16 @@ function buildChangelogBetweenTags () {
         message=$(echo $commit|awk '{ print substr($0, index($0,$3)) }')
         number=$(getNumberByType $type)
         if [ $number -ge 0  ]; then
+            if [ $number -eq 9 ]; then
+                message=$(echo $commit|awk '{ print substr($0, index($0,$2)) }')
+            fi
             changelog[$number]=$(echo "${changelog[$number]}* $message ([${hash}](${remoteURL}/${commitWord}/${hash}))\n")
             commitCount=$((commitCount+1))
         fi
     done
     if [ $commitCount -gt 0 ]; then
         echo -e "## $changelogTitle\n"
-        for number in $(seq 0 8)
+        for number in $(seq 0 9)
         do
             type=$(getTypeByNumber $number)
             chagngelog[$number]=$(echo -e "${changelog[$number]}" | sort)
@@ -110,16 +119,18 @@ function buildChangelogBetweenTags () {
 
 echo -e "# Changelog\n"
 lastTag=$(git describe --tags $(git rev-list --tags --max-count=1) 2> /dev/null || true)
+unreleaseFlag=false
 buildChangelogBetweenTags $lastTag HEAD
 currentTag=""
 nextTag=""
-tagList=$(git tag | xargs -I@ git log --format=format:"%ai @%n" -1 @ | sort -r | awk '{print $4}')
+tagList=$(git tag | tail -r | xargs -I@ git log --format=format:"%ai @%n" -1 @ | awk '{print $4}')
 for currentTag in $tagList
 do
     [[ $nextTag == "" ]] || buildChangelogBetweenTags $currentTag $nextTag
     nextTag=$currentTag
 done
 
+# First release
 if [ "$currentTag" != "" ]; then
     buildChangelogBetweenTags $currentTag
 fi
