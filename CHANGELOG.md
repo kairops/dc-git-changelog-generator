@@ -1,5 +1,24 @@
 # Changelog
 
+## v1.1.0 (2020-04-01)
+
+### New
+
+* Add authors list to the release information ([a88771d](https://github.com/kairops/dc-git-changelog-generator/commit/a88771d))
+
+### Update
+
+* Fix unreleased behaviour and add unclasified commits under 'Misc' group ([060f777](https://github.com/kairops/dc-git-changelog-generator/commit/060f777))
+
+### Build
+
+* Update Auto Release Log adding v1.1.0 info with JPL ([97dbf7f](https://github.com/kairops/dc-git-changelog-generator/commit/97dbf7f))
+* Use teecke jpl v3.4.1 ([bb9680e](https://github.com/kairops/dc-git-changelog-generator/commit/bb9680e))
+
+### Docs
+
+* Generate v1.0.0 changelog with JPL ([1114448](https://github.com/kairops/dc-git-changelog-generator/commit/1114448))
+
 ## v1.0.0 (2020-03-09)
 
 ### Breaking
