@@ -17,6 +17,9 @@
 
 set -eo pipefail
 
+# Use "tac" command where available
+which tac > /dev/null 2>&1 && reverseCMD="tac" || reverseCMD="tail -r"
+
 function echo_debug () {
     if [ "$KD_DEBUG" == "1" ]; then
         echo >&2 ">>>> DEBUG >>>>> $(date "+%Y-%m-%d %H:%M:%S") $KD_NAME: $@"
@@ -150,7 +153,7 @@ unreleaseFlag=false
 buildChangelogBetweenTags $lastTag HEAD
 currentTag=""
 nextTag=""
-tagList=$(git tag | tail -r | xargs -I@ git log --format=format:"%ai @%n" -1 @ | awk '{print $4}')
+tagList=$(git tag | $reverseCMD | xargs -I@ git log --format=format:"%ai @%n" -1 @ | awk '{print $4}')
 for currentTag in $tagList
 do
     [[ $nextTag == "" ]] || buildChangelogBetweenTags $currentTag $nextTag
