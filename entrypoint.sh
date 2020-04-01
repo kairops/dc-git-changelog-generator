@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# TODO: Invert "tagFrom" => "tagTo" with "tagTo" => "tagFrom" starting with HEAD
+#       (simplicity of app)
+
 # Changelog "items" sorted in relevance order
 #
 #   Breaking - for a backwards-incompatible enhancement.
@@ -22,6 +25,21 @@ function echo_debug () {
 KD_NAME="git-changelog-generator"
 echo_debug "begin"
 
+# Check if an array contains a string
+# https://stackoverflow.com/questions/3685970/check-if-a-bash-array-contains-a-value
+function contains() {
+    local n=$#
+    local value=${!n}
+    for ((i=1;i < $#;i++)) {
+        if [ "${!i}" == "${value}" ]; then
+            echo "y"
+            return 0
+        fi
+    }
+    echo "n"
+    return 1
+}
+
 function getNumberByType() {
     case $1 in
         'Breaking:') number=0;;
@@ -33,7 +51,7 @@ function getNumberByType() {
         'Docs:') number=6;;
         'Security:') number=7;;
         'Deprecated:') number=8;;
-        *) number=-1;;
+        *) number=9;;
     esac
     echo -n $number
 }
@@ -49,6 +67,7 @@ function getTypeByNumber() {
         6) type='Docs';;
         7) type='Security';;
         8) type='Deprecated';;
+        9) type='Misc';;
     esac
     echo -n $type
 }
@@ -77,9 +96,15 @@ function buildChangelogBetweenTags () {
     commitList=$(git log ${tagFrom}${tagRange}${tagTo} --no-merges --pretty=format:"%h %s")
     commitCount=0
     changelog=()
-    if [ "$tagTo" == "HEAD" ] || [ "$tagTo" == "" ]; then
-        changelogTitle="Unreleased"
-    else
+    authorList=()
+    changelogTitle=""
+    if [ "$unreleaseFlag" == false ]; then
+        if [ "$tagTo" == "HEAD" ] || [ "$tagTo" == "" ]; then
+            changelogTitle="Unreleased"
+            unreleaseFlag=true
+        fi
+    fi
+    if [ "$changelogTitle" == "" ]; then
         tagDate=$(git log $tagName -n 1  --simplify-by-decoration --pretty="format:%ai"|awk {'print $1'})
         changelogTitle=$(echo -n "$tagName ($tagDate)")
     fi
@@ -87,39 +112,52 @@ function buildChangelogBetweenTags () {
     do
         hash=$(echo $commit|awk '{print $1}')
         type=$(echo $commit|awk '{print $2}')
+        author=$(git log -n1 $hash --pretty="format:%aN")
         message=$(echo $commit|awk '{ print substr($0, index($0,$3)) }')
         number=$(getNumberByType $type)
         if [ $number -ge 0  ]; then
+            if [ $(contains "${authorList[@]}" "$author") == "n" ] && ! [[ $author == Jenkins* ]]; then
+                authorList+=("$author")
+            fi
+            if [ $number -eq 9 ]; then
+                message=$(echo $commit|awk '{ print substr($0, index($0,$2)) }')
+            fi
             changelog[$number]=$(echo "${changelog[$number]}* $message ([${hash}](${remoteURL}/${commitWord}/${hash}))\n")
             commitCount=$((commitCount+1))
         fi
     done
     if [ $commitCount -gt 0 ]; then
         echo -e "## $changelogTitle\n"
-        for number in $(seq 0 8)
+        echo -e "### Changes\n"
+        for number in $(seq 0 9)
         do
             type=$(getTypeByNumber $number)
             chagngelog[$number]=$(echo -e "${changelog[$number]}" | sort)
             if [ "${changelog[$number]}" ]; then
-                echo -e "### $type\n\n${changelog[$number]}"
+                echo -e "#### $type\n\n${changelog[$number]}"
             fi
         done
+        echo -e "### Authors\n"
+        printf '* %s\n' "${authorList[@]}"
+        echo
     fi
     IFS="$OLDIFS"
 }
 
 echo -e "# Changelog\n"
 lastTag=$(git describe --tags $(git rev-list --tags --max-count=1) 2> /dev/null || true)
+unreleaseFlag=false
 buildChangelogBetweenTags $lastTag HEAD
 currentTag=""
 nextTag=""
-tagList=$(git tag | xargs -I@ git log --format=format:"%ai @%n" -1 @ | sort -r | awk '{print $4}')
+tagList=$(git tag | tail -r | xargs -I@ git log --format=format:"%ai @%n" -1 @ | awk '{print $4}')
 for currentTag in $tagList
 do
     [[ $nextTag == "" ]] || buildChangelogBetweenTags $currentTag $nextTag
     nextTag=$currentTag
 done
 
+# First release
 if [ "$currentTag" != "" ]; then
     buildChangelogBetweenTags $currentTag
 fi
