@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# TODO: Invert "tagFrom" => "tagTo" with "tagTo" => "tagFrom" starting with HEAD
+#       (simplicity of app)
+
 # Changelog "items" sorted in relevance order
 #
 #   Breaking - for a backwards-incompatible enhancement.
@@ -21,6 +24,21 @@ function echo_debug () {
 }
 KD_NAME="git-changelog-generator"
 echo_debug "begin"
+
+# Check if an array contains a string
+# https://stackoverflow.com/questions/3685970/check-if-a-bash-array-contains-a-value
+function contains() {
+    local n=$#
+    local value=${!n}
+    for ((i=1;i < $#;i++)) {
+        if [ "${!i}" == "${value}" ]; then
+            echo "y"
+            return 0
+        fi
+    }
+    echo "n"
+    return 1
+}
 
 function getNumberByType() {
     case $1 in
@@ -78,6 +96,7 @@ function buildChangelogBetweenTags () {
     commitList=$(git log ${tagFrom}${tagRange}${tagTo} --no-merges --pretty=format:"%h %s")
     commitCount=0
     changelog=()
+    authorList=()
     changelogTitle=""
     if [ "$unreleaseFlag" == false ]; then
         if [ "$tagTo" == "HEAD" ] || [ "$tagTo" == "" ]; then
@@ -93,9 +112,13 @@ function buildChangelogBetweenTags () {
     do
         hash=$(echo $commit|awk '{print $1}')
         type=$(echo $commit|awk '{print $2}')
+        author=$(git log -n1 $hash --pretty="format:%aN")
         message=$(echo $commit|awk '{ print substr($0, index($0,$3)) }')
         number=$(getNumberByType $type)
         if [ $number -ge 0  ]; then
+            if [ $(contains "${authorList[@]}" "$author") == "n" ] && ! [[ $author == Jenkins* ]]; then
+                authorList+=("$author")
+            fi
             if [ $number -eq 9 ]; then
                 message=$(echo $commit|awk '{ print substr($0, index($0,$2)) }')
             fi
@@ -105,14 +128,18 @@ function buildChangelogBetweenTags () {
     done
     if [ $commitCount -gt 0 ]; then
         echo -e "## $changelogTitle\n"
+        echo -e "### Changes\n"
         for number in $(seq 0 9)
         do
             type=$(getTypeByNumber $number)
             chagngelog[$number]=$(echo -e "${changelog[$number]}" | sort)
             if [ "${changelog[$number]}" ]; then
-                echo -e "### $type\n\n${changelog[$number]}"
+                echo -e "#### $type\n\n${changelog[$number]}"
             fi
         done
+        echo -e "### Authors\n"
+        printf '* %s\n' "${authorList[@]}"
+        echo
     fi
     IFS="$OLDIFS"
 }
