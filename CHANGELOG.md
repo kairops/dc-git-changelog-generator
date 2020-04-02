@@ -1,5 +1,26 @@
 # Changelog
 
+## v1.1.2 (2020-04-02)
+
+### Changes
+
+#### Fix
+
+* Use the right release tag sort order ([895a367](https://github.com:kairops/dc-git-changelog-generator/commit/895a367))
+
+#### Build
+
+* Update Auto Release Log adding v1.1.2 info with JPL ([96fbf2d](https://github.com:kairops/dc-git-changelog-generator/commit/96fbf2d))
+* Use empty docker registry host to use dockerhub by default ([01ee079](https://github.com:kairops/dc-git-changelog-generator/commit/01ee079))
+
+#### Docs
+
+* Generate v1.1.1 changelog with JPL ([380d668](https://github.com:kairops/dc-git-changelog-generator/commit/380d668))
+
+### Authors
+
+* Pedro Amador
+
 ## v1.1.1 (2020-04-01)
 
 ### Changes
