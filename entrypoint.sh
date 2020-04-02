@@ -153,7 +153,7 @@ unreleaseFlag=false
 buildChangelogBetweenTags $lastTag HEAD
 currentTag=""
 nextTag=""
-tagList=$(git tag | $reverseCMD | xargs -I@ git log --format=format:"%ai @%n" -1 @ | awk '{print $4}')
+tagList=$(git tag -l --sort=-v:refname)
 for currentTag in $tagList
 do
     [[ $nextTag == "" ]] || buildChangelogBetweenTags $currentTag $nextTag
