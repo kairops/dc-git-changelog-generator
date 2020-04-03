@@ -1,5 +1,30 @@
 # Changelog
 
+## v1.2.0 (2020-04-03)
+
+### Changes
+
+#### New
+
+* Add devcontrol actions ([068cbec](https://github.com:kairops/dc-git-changelog-generator/commit/068cbec))
+
+#### Upgrade
+
+* Refactor entrypoint ([d73a95a](https://github.com:kairops/dc-git-changelog-generator/commit/d73a95a))
+
+#### Build
+
+* Update Auto Release Log adding v1.2.0 info with JPL ([93891cf](https://github.com:kairops/dc-git-changelog-generator/commit/93891cf))
+* Review pipeline ([e2e11d0](https://github.com:kairops/dc-git-changelog-generator/commit/e2e11d0))
+
+#### Docs
+
+* Generate v1.1.2 changelog with JPL ([d741e45](https://github.com:kairops/dc-git-changelog-generator/commit/d741e45))
+
+### Authors
+
+* Pedro Amador
+
 ## v1.1.2 (2020-04-02)
 
 ### Changes

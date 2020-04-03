@@ -17,12 +17,9 @@
 
 set -eo pipefail
 
-# Use "tac" command where available
-which tac > /dev/null 2>&1 && reverseCMD="tac" || reverseCMD="tail -r"
-
 function echo_debug () {
     if [ "$KD_DEBUG" == "1" ]; then
-        echo >&2 ">>>> DEBUG >>>>> $(date "+%Y-%m-%d %H:%M:%S") $KD_NAME: $@"
+        echo >&2 ">>>> DEBUG >>>>> $(date "+%Y-%m-%d %H:%M:%S") $KD_NAME: " "$@"
     fi
 }
 KD_NAME="git-changelog-generator"
@@ -31,8 +28,9 @@ echo_debug "begin"
 # Check if an array contains a string
 # https://stackoverflow.com/questions/3685970/check-if-a-bash-array-contains-a-value
 function contains() {
-    local n=$#
-    local value=${!n}
+    local n value
+    n=$#
+    value=${!n}
     for ((i=1;i < $#;i++)) {
         if [ "${!i}" == "${value}" ]; then
             echo "y"
@@ -44,7 +42,7 @@ function contains() {
 }
 
 function getNumberByType() {
-    case $1 in
+    case "$1" in
         'Breaking:') number=0;;
         'New:') number=1;;
         'Upgrade:') number=2;;
@@ -76,19 +74,17 @@ function getTypeByNumber() {
 }
 
 function buildChangelogBetweenTags () {
-    local tagFrom tagTo tagRange tagName tagDate remoteURL commitWord commitList commitCount changelog commit hash type message number changelogTitle
+    local tagFrom tagTo tagRange tagDate remoteURL commitWord commitList commitCount changelog commit hash type message number changelogTitle
 
     # Parameters
     tagFrom=$1
     tagTo=$2
-    if [ "$tagTo" == "" ]; then
+    if [ "$tagFrom" == "" ]; then
         tagRange=""
-        tagName=$tagFrom
     else
         tagRange=".."
-        tagName=$tagTo
     fi
-    >&2 echo_debug ">>>> Using commit messages of $tagName"
+    >&2 echo_debug ">>>> Using commit messages of $tagTo"
 
     # Initioalizacion
     OLDIFS="$IFS"
@@ -96,7 +92,7 @@ function buildChangelogBetweenTags () {
     remoteURL="https://$(git ls-remote --get-url|sed 's|.*//||; s|.*@||')"
     remoteURL=${remoteURL%".git"}
     commitWord="commit"
-    commitList=$(git log ${tagFrom}${tagRange}${tagTo} --no-merges --pretty=format:"%h %s")
+    commitList=$(git log "${tagFrom}${tagRange}${tagTo}" --no-merges --pretty=format:"%h %s")
     commitCount=0
     changelog=()
     authorList=()
@@ -108,34 +104,33 @@ function buildChangelogBetweenTags () {
         fi
     fi
     if [ "$changelogTitle" == "" ]; then
-        tagDate=$(git log $tagName -n 1  --simplify-by-decoration --pretty="format:%ai"|awk {'print $1'})
-        changelogTitle=$(echo -n "$tagName ($tagDate)")
+        tagDate=$(git log "$tagTo" -n 1  --simplify-by-decoration --pretty="format:%ai"|awk '{print $1}')
+        changelogTitle=$(echo -n "$tagTo ($tagDate)")
     fi
     for commit in ${commitList}
     do
-        hash=$(echo $commit|awk '{print $1}')
-        type=$(echo $commit|awk '{print $2}')
-        author=$(git log -n1 $hash --pretty="format:%aN")
-        message=$(echo $commit|awk '{ print substr($0, index($0,$3)) }')
-        number=$(getNumberByType $type)
-        if [ $number -ge 0  ]; then
-            if [ $(contains "${authorList[@]}" "$author") == "n" ] && ! [[ $author == Jenkins* ]]; then
+        hash=$(echo "$commit"|awk '{print $1}')
+        type=$(echo "$commit"|awk '{print $2}')
+        author=$(git log -n1 "$hash" --pretty="format:%aN")
+        message=$(echo "$commit"|awk '{ print substr($0, index($0,$3)) }')
+        number=$(getNumberByType "$type")
+        if [ "$number" -ge 0  ]; then
+            if [ "$(contains "${authorList[@]}" "$author")" == "n" ] && ! [[ "$author" == Jenkins* ]]; then
                 authorList+=("$author")
             fi
-            if [ $number -eq 9 ]; then
-                message=$(echo $commit|awk '{ print substr($0, index($0,$2)) }')
+            if [ "$number" -eq 9 ]; then
+                message=$(echo "$commit"|awk '{ print substr($0, index($0,$2)) }')
             fi
-            changelog[$number]=$(echo "${changelog[$number]}* $message ([${hash}](${remoteURL}/${commitWord}/${hash}))\n")
+            changelog[$number]="${changelog[$number]}* $message ([${hash}](${remoteURL}/${commitWord}/${hash}))\n"
             commitCount=$((commitCount+1))
         fi
     done
-    if [ $commitCount -gt 0 ]; then
+    if [ "$commitCount" -gt 0 ]; then
         echo -e "## $changelogTitle\n"
         echo -e "### Changes\n"
         for number in $(seq 0 9)
         do
-            type=$(getTypeByNumber $number)
-            chagngelog[$number]=$(echo -e "${changelog[$number]}" | sort)
+            type=$(getTypeByNumber "$number")
             if [ "${changelog[$number]}" ]; then
                 echo -e "#### $type\n\n${changelog[$number]}"
             fi
@@ -148,20 +143,20 @@ function buildChangelogBetweenTags () {
 }
 
 echo -e "# Changelog\n"
-lastTag=$(git describe --tags $(git rev-list --tags --max-count=1) 2> /dev/null || true)
+lastTag=$(git describe --abbrev=0 2> /dev/null || true)
 unreleaseFlag=false
-buildChangelogBetweenTags $lastTag HEAD
+buildChangelogBetweenTags "$lastTag" HEAD
 currentTag=""
 nextTag=""
 tagList=$(git tag -l --sort=-v:refname)
 for currentTag in $tagList
 do
-    [[ $nextTag == "" ]] || buildChangelogBetweenTags $currentTag $nextTag
-    nextTag=$currentTag
+    [[ "$nextTag" == "" ]] || buildChangelogBetweenTags "$currentTag" "$nextTag"
+    nextTag="$currentTag"
 done
 
 # First release
 if [ "$currentTag" != "" ]; then
-    buildChangelogBetweenTags $currentTag
+    buildChangelogBetweenTags "" "$currentTag"
 fi
 echo_debug "end"
