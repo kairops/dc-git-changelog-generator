@@ -3,39 +3,49 @@
 @Library('github.com/teecke/jenkins-pipeline-library@v3.4.1') _
 
 // Initialize global config
-cfg = jplConfig('dc-git-changelog-generator', 'bash', '', [email:'redpandaci+dc-git-changelog-generator@gmail.com'])
+cfg = jplConfig('dc-git-changelog-generator', 'bash', '', [email: env.CIKAIROS_NOTIFY_EMAIL_TARGETS])
+
+/**
+ * Build and publish docker images
+ *
+ * @param nextReleaseNumber String Release number to be used as tag
+ */
+def buildAndPublishDockerImage(nextReleaseNumber = "") {
+    if (nextReleaseNumber == "") {
+        nextReleaseNumber = sh (script: "kd get-next-release-number .", returnStdout: true).trim().substring(1)
+    }
+    docker.withRegistry("", 'cikairos-docker-credentials') {
+        def customImage = docker.build("kairops/${cfg.projectName}:${nextReleaseNumber}", "--pull --no-cache .")
+        customImage.push()
+        if (nextReleaseNumber != "beta") {
+            customImage.push('latest')
+        }
+    }
+}
 
 pipeline {
-    agent none
+    agent { label 'docker' }
 
     stages {
         stage ('Initialize') {
-            agent { label 'master' }
             steps  {
                 jplStart(cfg)
             }
         }
-        stage ('Build') {
-            agent { label 'docker' }
+        stage ('Bash linter') {
             steps {
-                script {
-                    jplDockerPush (cfg, "kairops/dc-git-changelog-generator", "test", ".", "https://registry.hub.docker.com", "cikairos-docker-credentials")
-                }
+                sh 'devcontrol run-bash-linter'
             }
         }
-        stage ('Test') {
-            agent { label 'docker' }
-            steps  {
-                sh 'bin/test.sh'
+        stage ('Build') {
+            steps {
+                buildAndPublishDockerImage("beta")
             }
         }
-        stage ('Make release'){
-            agent { label 'docker' }
+        stage ('Make release') {
             when { branch 'release/new' }
             steps {
-                script { cfg.releaseTag = sh (script: "kd get-next-release-number .", returnStdout: true).trim() }
-                jplDockerPush (cfg, "kairops/dc-git-changelog-generator", cfg.releaseTag.substring(1), ".", "", "cikairos-docker-credentials")
-                jplDockerPush (cfg, "kairops/dc-git-changelog-generator", "latest", ".", "", "cikairos-docker-credentials")
+                buildAndPublishDockerImage()
                 jplMakeRelease(cfg, true)
             }
         }
@@ -52,6 +62,6 @@ pipeline {
         ansiColor('xterm')
         buildDiscarder(logRotator(artifactNumToKeepStr: '20',artifactDaysToKeepStr: '30'))
         disableConcurrentBuilds()
-        timeout(time: 1, unit: 'DAYS')
+        timeout(time: 10, unit: 'MINUTES')
     }
 }
