@@ -17,6 +17,10 @@
 
 set -eo pipefail
 
+# Global variables
+releaseTagToShow=""
+remoteURL=""
+
 function echo_debug () {
     if [ "$KD_DEBUG" == "1" ]; then
         echo >&2 ">>>> DEBUG >>>>> $(date "+%Y-%m-%d %H:%M:%S") $KD_NAME: " "$@"
@@ -74,7 +78,7 @@ function getTypeByNumber() {
 }
 
 function buildChangelogBetweenTags () {
-    local tagFrom tagTo tagRange tagDate remoteURL commitWord commitList commitCount changelog commit hash type message number changelogTitle
+    local tagFrom tagTo tagRange tagDate commitWord commitList commitCount changelog commit hash type message number changelogTitle
 
     # Parameters
     tagFrom=$1
@@ -84,13 +88,17 @@ function buildChangelogBetweenTags () {
     else
         tagRange=".."
     fi
-    >&2 echo_debug ">>>> Using commit messages of $tagTo"
+
+    if [ "$releaseTagToShow" == "" ] || [ "$releaseTagToShow" == "$tagTo" ]; then
+        >&2 echo_debug ">>>> Using commit messages of $tagTo"
+    else
+        >&2 echo_debug ">>>> Skipping release $tagTo"
+        return
+    fi
 
     # Initioalizacion
     OLDIFS="$IFS"
     IFS=$'\n' # bash specific
-    remoteURL="https://$(git ls-remote --get-url|sed 's|.*//||; s|.*@||')"
-    remoteURL=${remoteURL%".git"}
     commitWord="commit"
     commitList=$(git log "${tagFrom}${tagRange}${tagTo}" --no-merges --pretty=format:"%h %s")
     commitCount=0
@@ -142,6 +150,14 @@ function buildChangelogBetweenTags () {
     IFS="$OLDIFS"
 }
 
+# Use to get only the changelog of one release
+releaseTagToShow="$1"
+
+# Get remote URL
+remoteURL="https://$(git ls-remote --get-url|sed 's|.*//||; s|.*@||; s|:|\/|')"
+remoteURL=${remoteURL%".git"}
+
+# Build the changelog
 echo -e "# Changelog\n"
 lastTag=$(git describe --abbrev=0 2> /dev/null || true)
 unreleaseFlag=false

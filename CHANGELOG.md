@@ -1,5 +1,27 @@
 # Changelog
 
+## v1.2.1 (2020-04-04)
+
+### Changes
+
+#### Update
+
+* Use global variable for remote url ([bc416f5](https://github.com:kairops/dc-git-changelog-generator/commit/bc416f5))
+* Able to process only one release tag instead all changelog ([d558a24](https://github.com:kairops/dc-git-changelog-generator/commit/d558a24))
+
+#### Build
+
+* Update Auto Release Log adding v1.2.1 info with JPL ([310717f](https://github.com:kairops/dc-git-changelog-generator/commit/310717f))
+
+#### Docs
+
+* Document the use of tag parameter to process only one release tag ([ed119a6](https://github.com:kairops/dc-git-changelog-generator/commit/ed119a6))
+* Generate v1.2.0 changelog with JPL ([477185f](https://github.com:kairops/dc-git-changelog-generator/commit/477185f))
+
+### Authors
+
+* Pedro Amador
+
 ## v1.2.0 (2020-04-03)
 
 ### Changes
