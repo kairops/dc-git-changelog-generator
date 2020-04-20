@@ -1,6 +1,6 @@
 # DEPRECATED
 
-Please visit https://github.com/tpbtools/dc-git-changelog-generator
+Please visit https://github.com/ayudadigital/dc-git-changelog-generator
 
 # Docker Command: GIT Changelog Generator
 
